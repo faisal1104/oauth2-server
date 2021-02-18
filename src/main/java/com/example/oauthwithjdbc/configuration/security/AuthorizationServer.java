@@ -1,4 +1,4 @@
-package com.example.oauthwithjdbc.security;
+package com.example.oauthwithjdbc.configuration.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -34,15 +34,14 @@ public class AuthorizationServer implements AuthorizationServerConfigurer {
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.checkTokenAccess("permitAll()").tokenKeyAccess("permitAll()");
-      //  security.passwordEncoder(encoder);
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer client) throws Exception {
 
         client.jdbc(dataSource).passwordEncoder(encoder);
-                      //inMemory cleint
-      //  client.inMemory().withClient("abc").secret(encoder.encode("666666")).scopes("READ").authorizedGrantTypes("password","authorization_code");
+                      //inMemory cleint implementation
+      //  client.inMemory().withClient("mobile").secret(encoder.encode("pin")).scopes("READ").authorizedGrantTypes("password","authorization_code");
     }
 
 

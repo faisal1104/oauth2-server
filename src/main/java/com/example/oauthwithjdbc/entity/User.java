@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 
 @Entity
 @NoArgsConstructor
-public class Users implements UserDetails, Serializable {
+public class User implements UserDetails, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,14 +19,14 @@ public class Users implements UserDetails, Serializable {
     private String username;
     private String password;
     @ManyToOne
-    private Roles roles;
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Stream.of(this.roles).collect(Collectors.toList());
+        return Stream.of(this.role).collect(Collectors.toList());
     }
 
-    public Users(String username, String password) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
@@ -44,12 +44,12 @@ public class Users implements UserDetails, Serializable {
         this.password = password;
     }
 
-    public Roles getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(Roles roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public long getUserId() {
