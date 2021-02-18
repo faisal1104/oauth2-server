@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import java.io.Serializable;
+import java.util.stream.Stream;
 
 @Component
 public class InitialData implements CommandLineRunner, Serializable {
@@ -26,8 +27,11 @@ public class InitialData implements CommandLineRunner, Serializable {
 
         Role r1 = new Role("ROLE_ADMIN");
         Role r2 = new Role("ROLE_VIP");
-        roleRepository.save(r1);
-        roleRepository.save(r2);
+
+        Stream.of(r1,r2)
+                .filter(s -> !roleRepository.existsByAuthority(s.getAuthority()))
+                .map(roleRepository::save)
+                .forEach(l-> System.out.print(" "));
 
         String pass = passwordEncoder.encode("123456");
         User u1 = new User("admin", pass);
@@ -36,8 +40,10 @@ public class InitialData implements CommandLineRunner, Serializable {
         u1.setRole(r1);
         u2.setRole(r2);
         u3.setRole(r2);
-        userRepository.save(u1);
-        userRepository.save(u2);
-        userRepository.save(u3);
+
+        Stream.of(u1,u2,u3)
+                .filter(s -> !userRepository.existsByUsername(s.getUsername()))
+                .map(userRepository::save)
+                .forEach(l-> System.out.print(" "));
     }
 }
